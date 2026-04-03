@@ -1,4 +1,4 @@
-const MCP_BASE_URL = "http://localhost:3001";
+const MCP_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
 export async function callMCPTool(toolName: string, args: Record<string, unknown>) {
   const response = await fetch(`${MCP_BASE_URL}/tools/${toolName}`, {
