@@ -65,8 +65,9 @@ app.post("/tools/get_transactions", async (req, res) => {
   if (month) {
     const [year, mon] = month.split("-");
     const start = `${year}-${mon}-01`;
-    const end = `${year}-${mon}-31`;
-    query = query.gte("date", start).lte("date", end);
+    const nextMonth = new Date(parseInt(year), parseInt(mon), 1);
+    const end = nextMonth.toISOString().split("T")[0];
+    query = query.gte("date", start).lt("date", end);
   }
 
   const { data, error } = await query;
@@ -97,7 +98,10 @@ app.post("/tools/get_summary", async (req, res) => {
 
   if (month) {
     const [year, mon] = month.split("-");
-    query = query.gte("date", `${year}-${mon}-01`).lte("date", `${year}-${mon}-31`);
+    const start = `${year}-${mon}-01`;
+    const nextMonth = new Date(parseInt(year), parseInt(mon), 1);
+    const end = nextMonth.toISOString().split("T")[0];
+    query = query.gte("date", start).lt("date", end);
   }
 
   const { data, error } = await query;
